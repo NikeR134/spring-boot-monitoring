@@ -1,0 +1,21 @@
+groups:
+  - name: spring-boot-alerts
+    rules:
+      - alert: SpringBootApplicationDown
+        expr: up{job="spring-boot"} == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: Spring Boot application is down
+          description: Prometheus cannot scrape the Spring Boot application.
+
+      - alert: SpringBootHeapUsageHigh
+        expr: sum(jvm_memory_used_bytes{area="heap"}) / sum(jvm_memory_max_bytes{area="heap"}) > 0.7
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: Spring Boot heap usage is high
+          description: Heap usage has stayed above 70 percent for one minute.
+
